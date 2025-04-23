@@ -6,17 +6,20 @@ st.set_page_config(page_title="Insurance Quote Tool", layout="centered")
 PASSWORD = "kittenpoodle"
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
+if "pw_attempt" not in st.session_state:
+    st.session_state.pw_attempt = False
 
 if not st.session_state.authenticated:
     st.title("🔒 Enter Password")
     pw = st.text_input("Password", type="password")
     if st.button("Submit"):
+        st.session_state.pw_attempt = True
         if pw == PASSWORD:
             st.session_state.authenticated = True
-            st.experimental_rerun()
-        else:
-            st.error("Incorrect password")
+    if st.session_state.pw_attempt and not st.session_state.authenticated:
+        st.error("Incorrect password")
     st.stop()
+
 
 st.title("Insurance Quote Tool")
 
